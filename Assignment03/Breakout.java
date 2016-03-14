@@ -71,6 +71,7 @@ public class Breakout extends GraphicsProgram {
 	int bricksCounter = 0;
 	
 	boolean gameplay;
+	boolean restartGame;
 
 /* Method: run() */
 /** Runs the Breakout program. */
@@ -85,8 +86,9 @@ public class Breakout extends GraphicsProgram {
 	}
 	
 	public void playGame(){
-		
+		gameplay = true;
 		setupGame();
+		//println(gameplay);
 		
 		while(gameplay == true){
 			if (counter == 0 || bricksCounter == 100) break; 
@@ -100,6 +102,7 @@ public class Breakout extends GraphicsProgram {
 	public void endGame() {
 		
 		gameplay = false;
+		removeAll();
 
 		GLabel gameOverLabel = new GLabel("");
 		gameOverLabel.setLocation((APPLICATION_WIDTH/2) - PADDLE_WIDTH/2, HEIGHT/2);
@@ -110,6 +113,20 @@ public class Breakout extends GraphicsProgram {
 		if (bricksCounter == 100) {
 			gameOverLabel.setLabel("You Win!");
 			}
+		//wait
+		pause(750);
+		restartGame();
+	}
+	
+
+	//method to automatically restart gameplay
+	public void restartGame() {
+		
+		pause(100);
+		counter = 3;
+		bricksCounter = 0;
+		playGame();
+		println("play");
 		
 	}
 	
@@ -133,8 +150,10 @@ public class Breakout extends GraphicsProgram {
 		label02.setLabel("Bricks :");
 		
 		//creates a label based on the location of label02 that will let the user know how many bricks have been cleared
+		println(bricksCounter);
 		bricksLabel = new GLabel("");
 		bricksLabel.setFont("Times New Roman-15");
+		bricksLabel.setLabel("" +bricksCounter+ "");
 		add(bricksLabel, label02.getX() + label02.getWidth() , 50);
 	
 		
@@ -267,12 +286,15 @@ public class Breakout extends GraphicsProgram {
 		//ie. if the collider is a brick remove it when the ball hits it.
 	if (collider != null && collider != paddle && collider != label && collider != label02 && collider != livesLabel && collider != bricksLabel) {
 			remove(collider);
-			bricksCounter++;
-			bricksLabel.setLabel(""+bricksCounter+"");
+			
+			println(bricksCounter);
+			bricksLabel.setLabel("" +bricksCounter+ "");
 			vy = -vy;
 			if (bricksCounter == 100) {
 				endGame();
 			}
+			
+			bricksCounter++;
 		}
 	}
 	
